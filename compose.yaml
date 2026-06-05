@@ -1,32 +1,34 @@
+como quedaria: 
+
 services:
-  api:
+  api:
     build:
-      context: .
-      dockerfile: dockerfile
-      target: api
-    environment:
-      - RUST_LOG=api=debug
-      - ADDRESS=0.0.0.0:80
-      - ORIGIN=${FRONTEND_URL}
+      context: ./api
+    ports:
+      - 4010:80
+    environment:
+      - RUST_LOG=api=debug
+      - ADDRESS=0.0.0.0:80
+      - ORIGIN=http://localhost:3000
 
-  realtime:
+  realtime:
     build:
-      context: .
-      dockerfile: dockerfile
-      target: realtime
-    environment:
-      - RUST_LOG=realtime=debug
-      - ADDRESS=0.0.0.0:80
-      - ORIGIN=${FRONTEND_URL}
+      context: ./realtime
+    ports:
+      - 4000:80
+    environment:
+      - RUST_LOG=realtime=debug
+      - ADDRESS=0.0.0.0:80
+      - ORIGIN=http://localhost:3000
 
-  web:
+  web:
     build:
-      context: .
-      dockerfile: dockerfile
-      target: dashboard
-    depends_on:
-      - realtime
-      - api
-    environment:
-      - NEXT_PUBLIC_LIVE_URL=${REALTIME_URL}
-      - API_URL=${API_URL}
+      context: ./dashboard
+    depends_on:
+      - realtime
+      - api
+    ports:
+      - 3000:3000
+    environment:
+      - NEXT_PUBLIC_LIVE_URL=http://localhost:4000
+      - API_URL=http://localhost:4010
