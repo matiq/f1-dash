@@ -1,7 +1,9 @@
 services:
   api:
     build:
-      context: ./api
+      context: .
+      dockerfile: dockerfile
+      target: api
     environment:
       - RUST_LOG=api=debug
       - ADDRESS=0.0.0.0:80
@@ -9,7 +11,9 @@ services:
 
   realtime:
     build:
-      context: ./realtime
+      context: .
+      dockerfile: dockerfile
+      target: realtime
     environment:
       - RUST_LOG=realtime=debug
       - ADDRESS=0.0.0.0:80
@@ -17,7 +21,9 @@ services:
 
   web:
     build:
-      context: ./dashboard
+      context: .
+      dockerfile: dockerfile
+      target: web
     depends_on:
       - realtime
       - api
