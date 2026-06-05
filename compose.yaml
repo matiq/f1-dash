@@ -23,7 +23,7 @@ services:
     build:
       context: .
       dockerfile: dockerfile
-      target: web
+      target: dashboard
     depends_on:
       - realtime
       - api
